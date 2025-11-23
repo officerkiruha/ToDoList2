@@ -14,7 +14,7 @@ pool.getConnection((err,connection)=>{
         console.error('Error Connecting to mySQL',err.message);
     }
     else{
-        console.log('mySQL Have Been Connceting !');
+        console.log('mySQL Have Been Connecting !');
         connection.release();
    }
 })
