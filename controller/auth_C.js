@@ -1,5 +1,6 @@
 const {addUser,getByUserName,getByEmail} = require('../model/users_M');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 async function register(req,res) {
     try{
         let name = req.body.name;
@@ -29,7 +30,7 @@ async function register(req,res) {
     
 }
 
-async function login(req,res) {
+async function login(req,res,next) {
 try{
 let user = await getByUserName(req.body.userName);
 if(!user){
@@ -39,17 +40,36 @@ let isMatch = await bcrypt.compare(req.body.pass, user.pass);
 if(!isMatch){
 return res.status(400).json({message:"username or password are wrong"});
 }
-
-res.status(200).json({message:"You are login"});
-
+req.user = user;
+next();
 }catch(err){
     console.error(err);
     res.status(500).json({message:"Server Error"});
-
 }
-    
+}
+
+
+async function createJwt(req,res){
+    try{
+        let user = req.user;
+        let token = await jwt.sign(
+            {
+                id:user.id,
+                name:user.name,
+            },
+            process.env.SECRET_KEY,
+            {expiresIn:'3h'}
+        );
+        res.cookie('jwt',token,{maxAge:1000*60*60*3}).status(200).json({message:"Login successful"});
+        console.log(token);
+    }
+    catch(err){
+        console.error(err);
+        res.status(500).json({message:"Server Error"});
+    }
 }
 module.exports = {
     register,
     login,
+    createJwt
 }

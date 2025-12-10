@@ -6,9 +6,11 @@ const app = express();
 const port = process.env.PORT;
 const host = process.env.HOST;
 const db = require('./config/db_config.js');
+const cookies = require('cookie-parser');
 
 app.use(express.static(__dirname));
 app.use(express.json());
+app.use(cookies());
 
 
 
