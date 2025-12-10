@@ -1,4 +1,5 @@
-const {addUser,getByUserName,getByEmail} = require('../model/users_M')
+const {addUser,getByUserName,getByEmail} = require('../model/users_M');
+const bcrypt = require('bcrypt');
 async function register(req,res) {
     try{
         let name = req.body.name;
@@ -27,6 +28,28 @@ async function register(req,res) {
     }
     
 }
+
+async function login(req,res) {
+try{
+let user = await getByUserName(req.body.userName);
+if(!user){
+    return res.status(400).json({message:"username or password are wrong"});
+}
+let isMatch = await bcrypt.compare(req.body.pass, user.pass);
+if(!isMatch){
+return res.status(400).json({message:"username or password are wrong"});
+}
+
+res.status(200).json({message:"You are login"});
+
+}catch(err){
+    console.error(err);
+    res.status(500).json({message:"Server Error"});
+
+}
+    
+}
 module.exports = {
     register,
+    login,
 }

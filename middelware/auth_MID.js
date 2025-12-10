@@ -18,11 +18,19 @@ try{
     console.error(err);
     res.status(500).json({message:"Server Error"})
 }
-
+}
+function valuesToLogin(req,res,next){
+    let {userName,pass} = req.body;
+    if(!userName || !pass){
+        return res.status(400).json({message:"No data"});
+    }
+    next();
 }
 
 module.exports = {
     valuesToAdd,
     encrypPass,
+    valuesToLogin,
+    
 
 }
