@@ -17,7 +17,7 @@ async function remove(id) {
     let sql = `DELETE FROM users WHERE id = ?`;
     let result = await db.query(sql,[id]);
     console.log(result);
-    return result;
+    return result.affectedRows;
 }
 
 module.exports = {

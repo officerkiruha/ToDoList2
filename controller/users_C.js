@@ -25,8 +25,8 @@ async function getOneUser(req,res) {
 
  async function deleteUser(req,res) {
       try{
-        let user = await remove(req.id);
-        if(!user){
+        let affectedRows = await remove(req.id);
+        if(!affectedRows){
             return res.status(400).json({message:`user ${req.id} not exist`})
         }
         res.status(200).json({message:"The user is deleted!"});
