@@ -15,11 +15,20 @@ async function getOne(id) {
 }
 async function remove(id) {
     let sql = `DELETE FROM users WHERE id = ?`;
-    let result = await db.query(sql,[id]);
+    let [result] = await db.query(sql, [id]);
+    console.log(result);
+    return result.affectedRows;
+}
+async function update(id,user) {
+    let keys = Object.keys(user);
+    let values = Object.keys(user);
+    let set = keys.map(k=>`${k}=?`).join(',');
+    let sql = `UPDATE users SET ${set} WHERE id = ?`;
+    let [result] = await db.query(sql, [...values,id]);
     console.log(result);
     return result.affectedRows;
 }
 
 module.exports = {
-    getAll,getOne,remove
+    getAll,getOne,remove,update
 }
