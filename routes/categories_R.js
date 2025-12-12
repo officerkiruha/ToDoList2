@@ -8,7 +8,7 @@ const {
     deleteCategory
 } = require('../controller/categories_C');
 
-const { valuesToAdd } = require('../middelware/categories_MID');
+const { valuesToAdd,isValidId } = require('../middelware/categories_MID');
 const { isLoggedIn } = require('../middelware/auth_MID');
 
 
@@ -18,7 +18,7 @@ router.get('/', isLoggedIn, getAllCategories);
 router.get('/:id', isLoggedIn, getCategoryById);
 
 
-router.post('/reg', isLoggedIn, valuesToAdd, addCategory);
+router.post('/', isLoggedIn, valuesToAdd, addCategory);
 
 
 router.delete('/:id', isLoggedIn, deleteCategory);

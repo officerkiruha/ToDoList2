@@ -2,7 +2,7 @@ const { getAll, getById, add, remove } = require('../model/categories_M');
 
 async function getAllCategories(req,res) {
     try {
-        let categories = await getAll();
+        let categories = await getAll(req.user.id);
         
         if (!categories.length) {
             return res.status(400).json({ message: "No Data" });
@@ -18,11 +18,12 @@ async function getAllCategories(req,res) {
 async function getCategoryById(req,res) {
     try {
         let id = req.params.id;
-        let category = await getById(id);
+        let category = await getById(req.id,req.user.id);
 
         if (!category) {
             return res.status(404).json({ message:"Category not found" });
         }
+        if(us)
 
         res.status(200).json(category);
     } catch(err) {
@@ -52,8 +53,9 @@ async function addCategory(req,res) {
 async function deleteCategory(req,res) {
     try {
         let id = req.params.id;
+        let userId = req.user.id
 
-        let affectedRows = await remove(id);
+        let affectedRows = await remove(id,userId);
 
         if (!affectedRows) {
             return res.status(404).json({ message:"Category not found" });

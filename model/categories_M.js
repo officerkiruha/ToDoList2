@@ -1,14 +1,14 @@
 const db = require('../config/db_config.js');
 
-async function getAll() {
-    let sql = `SELECT * FROM categoris`;
-    let [rows] = await db.query(sql);
+async function getAll(userId) {
+    let sql = `SELECT * FROM categoris WHERE user_id = ?`;
+    let [rows] = await db.query(sql,[userId]);
     return rows;
 }
 
-async function getById(id) {
-    let sql = `SELECT * FROM categoris WHERE id = ?`;
-    let [rows] = await db.query(sql, [id]);
+async function getById(catid,useid) {
+    let sql = `SELECT * FROM categoris WHERE id = ? AND user_id = ?`;
+    let [rows] = await db.query(sql, [catid,useid]);
     return rows[0];
 }
 
@@ -18,9 +18,9 @@ async function add({name, userId}) {
     return result.insertId;
 }
 
-async function remove(id) {
-    let sql = `DELETE FROM categoris WHERE id = ?`;
-    let [result] = await db.query(sql, [id]);
+async function remove(id,userId) {
+    let sql = `DELETE FROM categoris WHERE id = ? ? AND user_id = ?`;
+    let [result] = await db.query(sql,[id,userId]);
     return result.affectedRows;
 }
 
