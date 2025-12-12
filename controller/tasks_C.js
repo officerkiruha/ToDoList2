@@ -1,7 +1,7 @@
-const {getTask} = require('../model/tasks_M');
+const {getTasks} = require('../model/tasks_M');
 async function getAllTasks(req,res) {
     try {
-        let tasks = await getTask(req.user.id);
+        let tasks = await getTasks(req.user.id);
         
         if (!tasks.length) {
             return res.status(200).json([]);
