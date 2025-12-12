@@ -18,5 +18,6 @@ app.get('/',(req,res)=>{res.sendFile(__dirname+'/Public/index.html')});
 app.use('/users',require('./routes/users_R.js'));
 app.use('/auth',require('./routes/auth_R.js'));
 app.use('/categories',require('./routes/categories_R.js'));
+app.use('/tasks',require('./routes/tasks_R.js'));
 
 app.listen(port,()=>{console.log(`http://${host}:${port}`)});
