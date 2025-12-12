@@ -1,4 +1,4 @@
-const { getAll, getById, add, remove } = require('../model/categories_M');
+const { getAll, getById, add, remove, updateCategory } = require('../model/categories_M');
 
 async function getAllCategories(req,res) {
     try {
@@ -18,7 +18,7 @@ async function getAllCategories(req,res) {
 async function getCategoryById(req,res) {
     try {
         let id = req.params.id;
-        let category = await getById(req.id,req.user.id);
+        let category = await getById(req.params.id,req.user.id);
 
         if (!category) {
             return res.status(404).json({ message:"Category not found" });
@@ -52,7 +52,7 @@ async function addCategory(req,res) {
 
 async function deleteCategory(req,res) {
     try {
-        let id = req.params.id;
+        let id = req.id;
         let userId = req.user.id
 
         let affectedRows = await remove(id,userId);
@@ -67,10 +67,31 @@ async function deleteCategory(req,res) {
         res.status(500).json({ message:"Server Error" });
     }
 }
+async function updateCategoryById(req, res){
+    try{
+    let id = req.params.id;
+    let userId = req.user.id;
+    let name = req.body.name;
+
+    let affectedRows = await updateCategory(id,userId,name);
+      if (!affectedRows) {
+            return res.status(404).json({ message: "Category not found or not yours" });
+        }
+
+        res.status(200).json({ message: "Category updated!" });
+
+    }
+     catch(err) {
+        console.error(err);
+        res.status(500).json({ message: "Server Error" });
+     }
+}
 
 module.exports = {
     getAllCategories,
     getCategoryById,
     addCategory,
-    deleteCategory
+    deleteCategory,
+    updateCategory,
+    updateCategoryById,
 }

@@ -19,8 +19,13 @@ async function add({name, userId}) {
 }
 
 async function remove(id,userId) {
-    let sql = `DELETE FROM categoris WHERE id = ? ? AND user_id = ?`;
+    let sql = `DELETE FROM categoris WHERE id = ? AND user_id = ?`;
     let [result] = await db.query(sql,[id,userId]);
+    return result.affectedRows;
+}
+async function updateCategory(id, userId, name) {
+    let sql = `UPDATE categoris SET name = ? WHERE id = ? AND user_id = ?`;
+    let [result] = await db.query(sql, [name, id, userId]);
     return result.affectedRows;
 }
 
@@ -28,5 +33,6 @@ module.exports = {
     getAll,
     getById,
     add,
-    remove
+    remove,
+    updateCategory,
 }

@@ -5,22 +5,19 @@ const {
     getAllCategories,
     getCategoryById,
     addCategory,
-    deleteCategory
+    deleteCategory,
+    updateCategoryById
 } = require('../controller/categories_C');
 
-const { valuesToAdd,isValidId } = require('../middelware/categories_MID');
+const { vaildValues,isValidId} = require('../middelware/categories_MID');
 const { isLoggedIn } = require('../middelware/auth_MID');
 
+router.use(isLoggedIn);
 
-router.get('/', isLoggedIn, getAllCategories);
-
-
-router.get('/:id', isLoggedIn, getCategoryById);
-
-
-router.post('/', isLoggedIn, valuesToAdd, addCategory);
-
-
-router.delete('/:id', isLoggedIn, deleteCategory);
+router.get('/',getAllCategories);
+router.get('/:id',isValidId,getCategoryById);
+router.post('/',isValidId, vaildValues, addCategory);
+router.delete('/:id',isValidId, deleteCategory);
+router.patch('/:id', isValidId, vaildValues, updateCategoryById);
 
 module.exports = router;
