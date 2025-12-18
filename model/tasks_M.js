@@ -4,7 +4,11 @@ async function getTasks(userId) {
     let [rows] = await db.query(sql,[userId]);
     return rows;
 }
-
+async function addTask({text,is_done,categoryId},user_id) {
+    let sql = `INSERT INTO tasks (text,is_done,category_id,user_id) VALUES (?,?,?,?)`;
+    let [result] = await db.query(sql, [text,is_done,categoryId,user_id]);
+    return result.insertId;
+}
 module.exports = {
-   getTasks
+   getTasks,addTask
 }
