@@ -1,4 +1,4 @@
-function vaildValues(req,res,next){
+function vaildValuesToAdd(req,res,next){
     let text = req.body.text;
     if(!text){
         return res.status(400).json({message:"No data"});
@@ -14,8 +14,25 @@ function isValidId(req, res, next) {
     next();
 }
 
+function valuesToEdit(req,res,next){ 
+    let obj = {};
+    if(req.body.text){
+        obj.text = req.body.text;
+    }
+     if(req.body.isDone){
+        obj.is_done = req.body.isDone;
+    }
+    let keys =  Object.keys(obj);
+    if(keys.length === 0 ){
+        return res.status(400).json({message:"Not value are sending"});
+    }
+    req.newTask= obj;
+    next();
+}
+
 module.exports = {
-    vaildValues,
+    vaildValuesToAdd,
    isValidId,
+   valuesToEdit,
    
 };
