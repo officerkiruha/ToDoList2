@@ -1,4 +1,4 @@
-const {getTasks,add} = require('../model/tasks_M');
+const {getTasks,add,getById,remove} = require('../model/tasks_M');
 async function getAllTasks(req,res) {
     try {
         let tasks = await getTasks(req.user.id);
@@ -27,6 +27,41 @@ async function addTask(req,res) {
         res.status(500).json({ message:"Server Error" });
     }
 }
+
+async function getTasksById(req,res) {
+    try {
+    
+        let tasks = await getById(req.params.id,req.user.id);
+
+        if (!tasks) {
+            return res.status(404).json({ message:"Task not found" });
+        }
+        if(us)
+
+        res.status(200).json(tasks);
+    } catch(err) {
+        console.error(err);
+        res.status(500).json({ message:"Server Error" });
+    }
+}
+
+async function deleteTask(req,res) {
+    try {
+        let id = req.id;
+        let userId = req.user.id
+
+        let affectedRows = await remove(id,userId);
+
+        if (!affectedRows) {
+            return res.status(404).json({ message:"Task not found" });
+        }
+
+        res.status(200).json({ message:"Task deleted!" });
+    } catch(err) {
+        console.error(err);
+        res.status(500).json({ message:"Server Error" });
+    }
+}
 module.exports = {
-   getAllTasks,addTask
+   getAllTasks,addTask,getTasksById,deleteTask
 }
