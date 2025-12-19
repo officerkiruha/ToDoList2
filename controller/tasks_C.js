@@ -17,7 +17,8 @@ async function addTask(req,res) {
     try {
         const text = req.body.text;
         const userId = req.user.id;
-        const taskId = await add({ text, userId });
+        let CategoriId = req.user.catId || null;
+        const taskId = await add({ text, userId,CategoriId});
         if (!taskId) {
             return res.status(500).json({ message:"Server Error" });
         }

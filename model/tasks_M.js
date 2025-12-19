@@ -4,9 +4,9 @@ async function getTasks(userId) {
     let [rows] = await db.query(sql,[userId]);
     return rows;
 }
-async function add({text,userId}) {
-    let sql = `INSERT INTO tasks (text, user_id) VALUES (?, ?)`;
-    let [result] = await db.query(sql, [text,userId]);
+async function add({text,userId,CategoriId}) {
+    let sql = `INSERT INTO tasks (text, user_id,category_id) VALUES (?,?,?)`;
+    let [result] = await db.query(sql, [text,userId,CategoriId]);
     return result.insertId;
 }
 async function getById(taskId,userId) {
