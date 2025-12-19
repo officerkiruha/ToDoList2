@@ -29,7 +29,7 @@ function valuesToLogin(req,res,next){
 function isLoggedIn(req,res,next){
     let token = req.cookies.jwt;
     if(!token){
-        res.status(401).json({message:"connect to the system"});
+       return res.status(401).json({message:"connect to the system"});
     }
     try{
         let payload = jwt.verify(token,process.env.SECRET_KEY);
@@ -38,7 +38,7 @@ function isLoggedIn(req,res,next){
     }
     catch(err){
       console.error(err);
-     res.status(500).json({message:"Server Error"});
+     return res.status(500).json({message:"Server Error"});
     }
 }
 
