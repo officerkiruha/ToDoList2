@@ -3,7 +3,7 @@ async function login(){
     let pass = document.getElementById('pass').value;
     try{
         if(userName && pass){
-        let response = await fetch('/auth/reg',{
+        let response = await fetch('/auth/login',{
             method:'POST',
             headers:{'Content-Type':'application/json'},
             body:JSON.stringify({userName,pass})
