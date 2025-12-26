@@ -14,7 +14,7 @@ app.use(express.static(path.join(__dirname, 'Public')));
 app.use(express.json());
 app.use(cookies());
 
-//app.get('/',(req,res)=>{res.sendFile(__dirname+'/Public/index.html')});
+
 
 app.use('/',require('./routes/pages_R.js'));
 app.use('/users',require('./routes/users_R.js'));
