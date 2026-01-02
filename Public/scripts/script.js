@@ -1,7 +1,7 @@
 let greating = "Hello";
 greating+=localStorage.getItem('name');
 document.getElementById('greating').innerHTML = greating; 
-let allCategoris =[];
+allCategoris =[];
 async function getTasks(){
     try{
         let response = await fetch('/tasks');
@@ -27,11 +27,11 @@ async function getTasks(){
                 if(obj){ 
                     let rowClass = obj.is_done ? "class = rowClass" : "";
                     let isChecked = obj.is_done ? "checked" : "";
-                    let catName = allCategoris[obj.category_i] ? allCategoris[obj.category_i].name:'--';
+                    let catName = allCategoris[obj.category_id] ? allCategoris[obj.category_id].name:'--';
                     txt +=`<tr class = ${rowClass} >`;
                     txt += `<td><input type="checkbox" ${isChecked} onchange="taskDone(${obj.id},this)"></td>`;
                      txt += `<td>${obj.text}</td>`;
-                     txt += `<td>${obj.category_id}</td>`;
+                     txt += `<td>${catName}</td>`;
                      txt += `<td><button onclick = "taskById(${obj.id})">Edit</button></td>`;
                     txt += `<td><button onclick="deleteTask(${obj.id})">Delete</button></td>`;
              txt += "</tr>";
@@ -70,6 +70,16 @@ async function getCategories(){
     catch{
         alert(err)
     }
+}
+function SelectCat(){
+    let select = document.getElementById('tasksSelect');
+    select.innerHTML = '<option value="">Chose Category</option>';
+    allCategoris.forEach(category =>{
+           const option = document.createElement('option');
+        option.value = category.id;
+        option.textContent = category.name;
+        select.appendChild(option);
+    })
 }
 getCategories()
 getTasks();
