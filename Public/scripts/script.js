@@ -1,37 +1,75 @@
-const form = document.getElementById('registerForm');
-const message = document.getElementById('message');
-
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const formData = new FormData(form);
-    const data = {
-        name: formData.get('name'),
-        email: formData.get('email'),
-        userName: formData.get('userName'),
-        pass: formData.get('pass')
-    };
-
-    try {
-        const res = await fetch('/auth/reg', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-
-        const result = await res.json();
-
-        if (res.status === 201) {
-            message.style.color = 'green';
-            message.textContent = result.message;
-            form.reset();
-        } else {
-            message.style.color = 'red';
-            message.textContent = result.message;
+let greating = "Hello";
+greating+=localStorage.getItem('name');
+document.getElementById('greating').innerHTML = greating; 
+let allCategoris =[];
+async function getTasks(){
+    try{
+        let response = await fetch('/tasks');
+        if(response.status == 401){
+            window.location.href = '/login';
         }
-    } catch (err) {
-        console.error(err);
-        message.style.color = 'red';
-        message.textContent = "Error connecting to server";
+        let data = await response.json();
+        if(response.status == 400){
+            alert(data.message);
+            return;
+        }
+        createTable(data)
     }
-});
+    catch{
+        alert(err)
+    }
+}
+ function createTable(data){
+    console.log("kkkk");
+    
+            let txt = "";
+            for(obj of data){
+                if(obj){ 
+                    let rowClass = obj.is_done ? "class = rowClass" : "";
+                    let isChecked = obj.is_done ? "checked" : "";
+                    let catName = allCategoris[obj.category_i] ? allCategoris[obj.category_i].name:'--';
+                    txt +=`<tr class = ${rowClass} >`;
+                    txt += `<td><input type="checkbox" ${isChecked} onchange="taskDone(${obj.id},this)"></td>`;
+                     txt += `<td>${obj.text}</td>`;
+                     txt += `<td>${obj.category_id}</td>`;
+                     txt += `<td><button onclick = "taskById(${obj.id})">Edit</button></td>`;
+                    txt += `<td><button onclick="deleteTask(${obj.id})">Delete</button></td>`;
+             txt += "</tr>";
+       }            
+     }
+   document.getElementById("taskTabel").innerHTML=txt
+  }
+    async function taskDone(id, elm) {
+        let isDone = elm.checked;
+    try {
+        let response = await fetch(`/tasks/${id}`, {
+            method: 'PATCH',
+            headers: {'Content-type':'application/json'},
+            body: JSON.stringify({isDone})
+        });
+        getTasks();
+    } catch(err) {
+        alert(err);
+    }
+}
+async function getCategories(){
+    try{
+        let response = await fetch('/categories');
+        if(response.status == 401){
+            window.location.href = '/login';
+        }
+        let data = await response.json();
+        if(response.status == 400){
+            alert(data.message);
+            return;
+        }
+        for(let c of data){
+            allCategoris[c.id] = c;
+        }
+    }
+    catch{
+        alert(err)
+    }
+}
+getCategories()
+getTasks();
