@@ -1,8 +1,9 @@
 let greating = "Hello";
-greating+=localStorage.getItem('name');
+greating+=localStorage.getItem(' name');
 document.getElementById('greating').innerHTML = greating; 
 let allCategoris = [];
 let allTasks = [];
+let editingTaskId = null;
 
 async function getTasks(){
     try{
@@ -24,8 +25,6 @@ async function getTasks(){
 }
 
 function createTable(data){
-    console.log("kkkk");
-    
     let txt = "";
     for(obj of data){
         if(obj){ 
@@ -65,7 +64,9 @@ async function deleteTask(id) {
             headers: {'Content-type':'application/json'}
         });
         let data = await response.json();
-        alert(data.message);
+        if(!response.ok){
+         alert(data.message);   
+        }
         getTasks();
     } catch(err) {
         alert(err);
@@ -73,7 +74,58 @@ async function deleteTask(id) {
 }
 
 async function taskById(id) {
-    alert("Edit functionality coming soon for task " + id);
+    editingTaskId = id;
+    let task = allTasks.find(t => t.id == id);
+    if (!task) return;
+    
+    document.getElementById('editTaskInput').value = task.text;
+    let editCategorySelect = document.getElementById('editCategorySelect');
+    editCategorySelect.innerHTML = '';
+    allCategoris.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category.id;
+        option.textContent = category.name;
+        if (category.id == task.category_id) option.selected = true;
+        editCategorySelect.appendChild(option);
+    });
+    
+    document.getElementById('editModal').style.display = 'block';
+}
+
+function closeEditModal() {
+    document.getElementById('editModal').style.display = 'none';
+    editingTaskId = null;
+}
+
+async function saveEditTask() {
+    try {
+        let taskText = document.getElementById('editTaskInput').value.trim();
+        let categoryId = document.getElementById('editCategorySelect').value;
+        
+        if (!taskText) {
+            alert('Please enter task text');
+            return;
+        }
+        
+        let response = await fetch(`/tasks/${editingTaskId}`, {
+            method: 'PATCH',
+            headers: {'Content-type':'application/json'},
+            body: JSON.stringify({
+                text: taskText,
+                category_id: parseInt(categoryId) || null
+            })
+        });
+        
+        let data = await response.json();
+        if(!response.ok){
+            alert(data.message);
+        } else {
+            closeEditModal();
+            getTasks();
+        }
+    } catch(err) {
+        alert(err);
+    }
 }
 
 async function getCategories(){
@@ -100,24 +152,63 @@ async function getCategories(){
 function SelectCat(){
     let select = document.getElementById('tasksSelect');
     select.innerHTML = '<option value="">View All Tasks</option>';
+    let categorySelect = document.getElementById('categorySelect');
+    categorySelect.innerHTML = '';
     allCategoris.forEach(category =>{
         const option = document.createElement('option');
         option.value = category.id;
         option.textContent = category.name;
         select.appendChild(option);
+        categorySelect.appendChild(option.cloneNode(true));
     })
     select.addEventListener('change', filterTasks);
 }
 
 function filterTasks() {
     let select = document.getElementById('tasksSelect');
-    let selectedCategoryId = select.value;
-    
+    let selectedCategoryId = select.value;    
     if (selectedCategoryId === '') {
         createTable(allTasks);
     } else {
         let filteredTasks = allTasks.filter(task => task.category_id == selectedCategoryId);
         createTable(filteredTasks);
+    }
+}
+
+async function addTask() {
+    try {
+        let taskInput = document.getElementById('taskInput');
+        let categorySelect = document.getElementById('categorySelect');
+        let taskText = taskInput.value.trim();
+        let categoryId = categorySelect.value;
+        if(categoryId == 0 ){
+            categoryId = null;
+        }
+        
+        console.log('Adding task:', {taskText, categoryId});
+        
+        if (!taskText) {
+            alert('add text for task');
+            return;
+        }
+        
+        let response = await fetch('/tasks', {
+            method: 'POST',
+            headers: {'Content-type':'application/json'},
+            body: JSON.stringify({
+                text: taskText,
+                category_id: parseInt(categoryId) || null
+            })
+        });
+        let data = await response.json();
+        if(!response.ok){
+         alert(data.message);   
+        } else {
+            taskInput.value = '';
+            getTasks();
+        }
+    } catch(err) {
+        alert(err);
     }
 }
 
