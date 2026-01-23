@@ -28,11 +28,23 @@ async function updateCategory(id, userId, name) {
     let [result] = await db.query(sql, [name, id, userId]);
     return result.affectedRows;
 }
+async function removeTasksByCategory(id,userId) {
+    let sql = `DELETE FROM tasks WHERE category_id = ? AND user_id = ?`;
+    let [result] = await db.query(sql,[id,userId]);
+    return result.affectedRows;
+}
+async function getTasksByCategory(id,userId) {
+    let sql = `SELECT * FROM tasks WHERE category_id = ? AND user_id = ?`;
+    let [rows] = await db.query(sql, [id,userId]);
+    return rows;
+}
 
 module.exports = {
     getAll,
     getById,
     add,
     remove,
+    removeTasksByCategory,
+    getTasksByCategory,
     updateCategory,
 }
