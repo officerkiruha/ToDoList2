@@ -1,4 +1,4 @@
-const { json } = require("express");
+const { json, response } = require("express");
 
 let allCategories = [];
 let editingCategoryId = null;
@@ -35,7 +35,6 @@ function displayCategories(data){
  document.getElementById("categoriesTable").innerHTML =txt;
     }
 }
-
 async function addCategory(){
     let categoryName = document.getElementById('categoryInput').value;
     if(!categoryName){
@@ -59,5 +58,39 @@ async function addCategory(){
     } catch(err){
         console.error(err);
         alert('Error adding category');
+    }
+}
+function editCategory(id){
+    let category = allCategories.find(c => c.id === id);
+    if(category){
+        editingCategoryId = id;
+        document.getElementById('editCategoryInput').value = category.name;
+        document.getElementById('editModal').style.display = 'block';
+    }
+}
+
+async function saveEditCategory() {
+    let newName = document.getElementById('editCategoryInput').value;
+    if(!newName){
+        alert('Please enter a category name');
+        return;
+    }
+    try{
+        let response = await fetch(`/categories/${editingCategoryId}`,{
+        method: 'PATCH',
+        headers : {'Content-Type':'application/json'},
+        body : JSON.stringify({name:newName})
+        });
+        let data = await response.json();
+        if(response.status===200){
+            alert(data.message);
+            closeEditModal();
+            getCategories();
+        }else{
+            alert(data.message);
+        }
+    }catch(err){
+        console.error(err);
+        alert('Error updating category');
     }
 }
