@@ -1,3 +1,5 @@
+const { json } = require("express");
+
 let allCategories = [];
 let editingCategoryId = null;
 window.addEventListener('load',()=>{getAllCategories();});
@@ -31,5 +33,31 @@ function displayCategories(data){
             txt += "<tr>";
         }
  document.getElementById("categoriesTable").innerHTML =txt;
+    }
+}
+
+async function addCategory(){
+    let categoryName = document.getElementById('categoryInput').value;
+    if(!categoryName){
+        alert('Please enter a category name');
+        return;
+    }
+    try{
+        let response = await fetch('/categories',{
+            method : 'POST',
+            headers:{'Content-type':'application/json'},
+            body: JSON.stringify({name:categoryName})
+        });
+        let data = await response.json();
+        if(response.status === 201){
+            alert(data.message);
+            document.getElementById('categoryInput').value='';
+            getCategories();
+        } else{
+            alert(data.message);
+        }
+    } catch(err){
+        console.error(err);
+        alert('Error adding category');
     }
 }
