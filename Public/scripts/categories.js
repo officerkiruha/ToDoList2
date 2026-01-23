@@ -94,3 +94,46 @@ async function saveEditCategory() {
         alert('Error updating category');
     }
 }
+
+function closeEditModal(){
+    document.getElementById('editModal').style.display = 'none';
+    editingCategoryId = null;
+}
+
+async function deleteCategory(id) {
+    try{
+        let checkResponse = await fetch(`/categories/${id}`,{
+            method :'DELETE',
+            headers: {'Content-type':'application/json'}
+        });
+        let data = await checkResponse.json();
+
+        if(data.hasTasks){
+            let confirmation = confirm(`${data.message}`);
+            if(!confirmation){
+                return;
+            }
+             let deleteResponse = await fetch(`/categories/${id}/confirm`, {
+                method: 'DELETE',
+                headers: {'Content-type':'application/json'}
+            });
+            let deleteData = await deleteResponse.json();
+            if(deleteResponse.status===200){
+                alert(deleteData.message);
+                getCategories();
+            }else{
+                alert(deleteData.message);
+            }
+        }else{
+            if(checkResponse.status === 200){
+                alert(data.message);
+                getCategories();
+            }else{
+                alert(data.message);
+            }
+        }
+    } catch(err){
+        console.error(err);
+        alert('Error deleting category');
+    }
+}
