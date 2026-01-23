@@ -82,3 +82,23 @@ function closeEditModal(){
     document.getElementById('editModal').style.display='none';
     editingUserId = null;
 }
+
+async function deleteUser(id) {
+    let confirmation = confirm('Are you sure you want to delete this user?');
+    if(!confirmation) return;
+    try{
+        let response = await fetch(`/users/${id}`,{
+            method: 'DELETE'
+        });
+        let data = await response.json();
+        if(response.status === 200){
+            alert(data.message);
+            getUsers();
+        }else{
+            alert(data.message);
+        }
+    }catch(err){
+        console.error(err);
+        alert('Error deleting user');
+    }
+}
