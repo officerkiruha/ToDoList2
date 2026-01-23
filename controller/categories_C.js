@@ -1,4 +1,5 @@
-const { getAll, getById, add, remove, updateCategory } = require('../model/categories_M');
+const { use } = require('react');
+const { getAll, getById, add, remove, updateCategory, removeTasksByCategory, getTasksByCategory } = require('../model/categories_M');
 
 async function getAllCategories(req,res) {
     try {
@@ -51,14 +52,19 @@ async function addCategory(req,res) {
 async function deleteCategory(req,res) {
     try {
         let id = req.id;
-        let userId = req.user.id
-
+        let userId = req.user.id;
+        let tasks = await getTasksByCategory(id, userId);
+        if (tasks.length > 0) {
+            return res.status(200).json({ 
+                hasTasks: true, 
+                taskCount: tasks.length,
+                message: `This category has ${tasks.length} task(s). Confirm deletion to remove category and all its tasks.`
+            });
+        }
         let affectedRows = await remove(id,userId);
-
         if (!affectedRows) {
             return res.status(404).json({ message:"Category not found" });
         }
-
         res.status(200).json({ message:"Category deleted!" });
     } catch(err) {
         console.error(err);
@@ -84,12 +90,29 @@ async function updateCategoryById(req, res){
         res.status(500).json({ message: "Server Error" });
      }
 }
+async function deleteCategoryWithTasks(req,res) {
+    try{
+        let id = req.id;
+        let userId = req.user.id;
+        await removeTasksByCategory(id,userId);
+        let affectedRows = await remove(id,userId);
+        if(!affectedRows){
+            return res.status(404).json({message:"Category not found"});
+        }
+        res.status(200).json({ message:"Category and all its tasks deleted!" });
+    }catch(err){
+        console.error(err);
+        res.status(500).json({message:"Server Error"});
+    }
+    
+}
 
 module.exports = {
     getAllCategories,
     getCategoryById,
     addCategory,
     deleteCategory,
+    deleteCategoryWithTasks,
     updateCategory,
     updateCategoryById,
 }

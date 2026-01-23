@@ -5,6 +5,7 @@ const {
     getAllCategories,
     getCategoryById,
     addCategory,
+    deleteCategoryWithTasks,
     deleteCategory,
     updateCategoryById
 } = require('../controller/categories_C');
@@ -18,6 +19,7 @@ router.get('/',getAllCategories);
 router.get('/:id',isValidId,getCategoryById);
 router.post('/',isValidId, vaildValues, addCategory);
 router.delete('/:id',isValidId, deleteCategory);
+router.delete('/:id/confirm',isValidId, deleteCategoryWithTasks);
 router.patch('/:id', isValidId, vaildValues, updateCategoryById);
 
 module.exports = router;
