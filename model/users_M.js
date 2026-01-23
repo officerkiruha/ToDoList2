@@ -21,7 +21,7 @@ async function remove(id) {
 }
 async function update(id,user) {
     let keys = Object.keys(user);
-    let values = Object.keys(user);
+    let values = Object.values(user);
     let set = keys.map(k=>`${k}=?`).join(',');
     let sql = `UPDATE users SET ${set} WHERE id = ?`;
     let [result] = await db.query(sql, [...values,id]);

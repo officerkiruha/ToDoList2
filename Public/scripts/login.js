@@ -14,7 +14,7 @@ async function login(){
             window.location.href = '/';
             return;
         }
-             alert(data.massage);
+             alert(data.message);
         }
         alert("data is missing")
     }catch(err){

@@ -1,5 +1,5 @@
-let greating = "Hello";
-greating+=localStorage.getItem(' name');
+let greating = "Hello ";
+greating+=localStorage.getItem('name');
 document.getElementById('greating').innerHTML = greating; 
 let allCategoris = [];
 let allTasks = [];
@@ -30,7 +30,13 @@ function createTable(data){
         if(obj){ 
             let rowClass = obj.is_done ? "class = rowClass" : "";
             let isChecked = obj.is_done ? "checked" : "";
-            let catName = allCategoris[obj.category_id] ? allCategoris[obj.category_id].name:'--';
+            let catName = '';
+            if(allCategoris && allCategoris.length > 0){
+                let cat = allCategoris.find(c => c.id === obj.category_id);
+                catName = cat ? cat.name : '--';
+            } else {
+                catName = '--';
+            }
             txt +=`<tr class = ${rowClass} >`;
             txt += `<td><input type="checkbox" ${isChecked} onchange="taskDone(${obj.id},this)"></td>`;
             txt += `<td>${obj.text}</td>`;
@@ -135,13 +141,11 @@ async function getCategories(){
             window.location.href = '/login';
         }
         let data = await response.json();
-        if(response.status == 400){
-            alert(data.message);
+        if(data.length === undefined){
+            alert(data.message || 'Error loading categories');
             return;
         }
-        for(let c of data){
-            allCategoris[c.id] = c;
-        }
+        allCategoris = data;
         SelectCat();
     }
     catch(err){

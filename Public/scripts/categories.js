@@ -9,8 +9,8 @@ async function getCategories() {
             return;
         }
         let data = await response.json();
-        if(response.status===400){
-            alert(data.message);
+        if(data.length === undefined){
+            alert(data.message || 'Error loading categories');
             return;
         }
         allCategories = data;

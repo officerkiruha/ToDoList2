@@ -17,7 +17,7 @@ router.use(isLoggedIn);
 
 router.get('/',getAllCategories);
 router.get('/:id',isValidId,getCategoryById);
-router.post('/',isValidId, vaildValues, addCategory);
+router.post('/', vaildValues, addCategory);
 router.delete('/:id',isValidId, deleteCategory);
 router.delete('/:id/confirm',isValidId, deleteCategoryWithTasks);
 router.patch('/:id', isValidId, vaildValues, updateCategoryById);

@@ -8,6 +8,6 @@ const {isLoggedIn} = require('../middelware/auth_MID.js');
 router.get('/',isLoggedIn,getAllUsers);
 router.get('/:id',isValidId,getOneUser);
 router.delete('/:id',isValidId,deleteUser);
-router.patch('/:id',isValidId,valuesToEdit,updateUser)
+router.patch('/:id',isValidId,valuesToEdit,updateUser);
 
 module.exports = router;

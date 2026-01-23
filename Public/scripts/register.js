@@ -15,7 +15,7 @@ async function register(){
             return;
         }
              let data = await response.json();
-             alert(data.massage);
+             alert(data.message);
         }
         alert("data is missing")
     }catch(err){

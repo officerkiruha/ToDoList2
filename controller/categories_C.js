@@ -1,11 +1,11 @@
 const { getAll, getById, add, remove, updateCategory, removeTasksByCategory, getTasksByCategory } = require('../model/categories_M');
 
-async function getCategories(req,res) {
+async function getAllCategories(req,res) {
     try {
         let categories = await getAll(req.user.id);
         
-        if (!categories.length) {
-            return res.status(400).json({ message: "No Data" });
+        if (!categories || !categories.length) {
+            return res.status(200).json([]);
         }
 
         res.status(200).json(categories);
@@ -107,11 +107,10 @@ async function deleteCategoryWithTasks(req,res) {
 }
 
 module.exports = {
-    getCategories,
+    getAllCategories,
     getCategoryById,
     addCategory,
     deleteCategory,
     deleteCategoryWithTasks,
-    updateCategory,
     updateCategoryById,
 }
