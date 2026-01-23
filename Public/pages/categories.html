@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Categories Management</h2>
+    <a href="/">Back To HomePage</a>
+    <div>
+        <input type="text" id="categoryInput" placeholder="Enter category name">
+        <button onclick="addCategory()">Add Category</button>
+    </div>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Category Name</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody id="categoriesTable"></tbody>
+    </table>
+
+<div id="editModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1;">
+            <div style="background:white; margin:50px auto; padding:20px; width:400px; border-radius:5px;">
+                <h2>Edit Category</h2>
+                <input type="text" id="editCategoryInput" placeholder="Category name">
+                <button onclick="saveEditCategory()">Save</button>
+                <button onclick="closeEditModal()">Cancel</button>
+            </div>
+</div>
+<script src="../scripts/categories.js"></script>
+</body>
+</html>

@@ -23,8 +23,6 @@ async function getCategoryById(req,res) {
         if (!category) {
             return res.status(404).json({ message:"Category not found" });
         }
-        if(us)
-
         res.status(200).json(category);
     } catch(err) {
         console.error(err);
