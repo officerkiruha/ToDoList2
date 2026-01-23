@@ -1,8 +1,6 @@
-const { json, response } = require("express");
-
 let allCategories = [];
 let editingCategoryId = null;
-window.addEventListener('load',()=>{getAllCategories();});
+window.addEventListener('load',()=>{getCategories();});
 async function getCategories() {
     try{
         let response = await fetch('/categories');
@@ -30,10 +28,10 @@ function displayCategories(data){
             txt +=`<td>${category.name}</td>`;
             txt += `<td><button onclick="editCategory(${category.id})">Edit</button></td>`;
             txt += `<td><button onclick="deleteCategory(${category.id})">Delete</button></td>`;
-            txt += "<tr>";
+            txt += "</tr>";
         }
- document.getElementById("categoriesTable").innerHTML =txt;
     }
+    document.getElementById("categoriesTable").innerHTML =txt;
 }
 async function addCategory(){
     let categoryName = document.getElementById('categoryInput').value;

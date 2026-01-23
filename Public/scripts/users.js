@@ -10,7 +10,7 @@ async function getUsers() {
         }
         let data = await response.json();
         if(response.status === 400){
-            alert(data.messsahe);
+            alert(data.message);
             return;
         }
         allUsers = data;

@@ -1,7 +1,6 @@
-const { use } = require('react');
 const { getAll, getById, add, remove, updateCategory, removeTasksByCategory, getTasksByCategory } = require('../model/categories_M');
 
-async function getAllCategories(req,res) {
+async function getCategories(req,res) {
     try {
         let categories = await getAll(req.user.id);
         
@@ -108,7 +107,7 @@ async function deleteCategoryWithTasks(req,res) {
 }
 
 module.exports = {
-    getAllCategories,
+    getCategories,
     getCategoryById,
     addCategory,
     deleteCategory,
