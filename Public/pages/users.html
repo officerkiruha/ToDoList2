@@ -3,16 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Users Management</title>
+    <link rel="stylesheet" href="../styles/styles.css">
 </head>
 <body>
-<h2>Users</h2>
-<form id="addUserForm">
-    <input type="text" id="userName" placeholder="User Name">
-    <input type="password" id="password" placeholder="Password">
-    <button>Add</button>
-</form>
+<h2>Users Management</h2>
+<a href="/">Back to Home</a>
+
 <table border="1" id="usersTable"></table>
+
+<div id="editModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1;">
+    <div style="background:white; margin:50px auto; padding:20px; width:400px; border-radius:5px;">
+        <h2>Edit User</h2>
+        <input type="text" id="editUserName" placeholder="User Name">
+        <input type="email" id="editUserEmail" placeholder="User Email">
+        <button onclick="saveEditUser()">Save</button>
+        <button onclick="closeEditModal()">Cancel</button>
+    </div>
+</div>
+
 <script src="/scripts/users.js"></script>
 </body>
 </html>
