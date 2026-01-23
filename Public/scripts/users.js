@@ -42,3 +42,43 @@ function displayUsers(data){
     }
     document.getElementById("usersTable").innerHTML = txt;
 }
+function editUser(id){
+    let user = allUsers.find(u=> u.id===id);
+    if(user){
+        editingUserId = id;
+        document.getElementById('editUserName').value = user.name;
+        document.getElementById('editUserEmail').value = user.email;
+        document.getElementById('editModal').style.display = 'block';
+    }
+}
+async function saveEditUser() {
+    let name = document.getElementById('editUserName').value.trim();
+    let email = document.getElementById('editUserEmail').value.trim();
+
+    if(!name || !email){
+        alert('Please fill in all fields');
+        return;
+    }
+    try{
+        let response = await fetch(`/users/${editingUserId}`,{
+            method:'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email })
+        });
+        let data = await response.json();
+        if(response.status === 200){
+            alert(data.message);
+            closeEditModal();
+            getUsers();
+        } else{
+            alert(data.message)
+        }
+    }catch(err){
+        console.error(err);
+        alert('Error updating user');
+    }    
+}
+function closeEditModal(){
+    document.getElementById('editModal').style.display='none';
+    editingUserId = null;
+}
