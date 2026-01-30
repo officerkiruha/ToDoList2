@@ -4,7 +4,7 @@ async function getAll() {
     let sql = `SELECT id,name,email FROM users`;
     //console.log(sql);
     let [rows] = await db.query(sql);
-    console.log(rows);
+    //console.log(rows);
     
     return rows;
 };
@@ -16,7 +16,7 @@ async function getOne(id) {
 async function remove(id) {
     let sql = `DELETE FROM users WHERE id = ?`;
     let [result] = await db.query(sql, [id]);
-    console.log(result);
+   // console.log(result);
     return result.affectedRows;
 }
 async function update(id,user) {
@@ -25,7 +25,7 @@ async function update(id,user) {
     let set = keys.map(k=>`${k}=?`).join(',');
     let sql = `UPDATE users SET ${set} WHERE id = ?`;
     let [result] = await db.query(sql, [...values,id]);
-    console.log(result);
+    //console.log(result);
     return result.affectedRows;
 }
 
@@ -45,6 +45,24 @@ async function addUser({name,email,userName,pass}) {
     return result.insertId;
 }
 
+async function getCategoriesByUser(userId) {
+    let sql = `SELECT * FROM categoris WHERE user_id = ?`;
+    let [rows] = await db.query(sql,[userId]);
+    return rows;
+}
+
+async function removeAllCategoriesByUser(userId) {
+    let sql = `DELETE FROM categoris WHERE user_id = ?`;
+    let [result] = await db.query(sql,[userId]);
+    return result.affectedRows;
+}
+
+async function removeAllTasksByUser(userId) {
+    let sql = `DELETE FROM tasks WHERE user_id = ?`;
+    let [result] = await db.query(sql,[userId]);
+    return result.affectedRows;
+}
+
 
 module.exports = {
     getAll,
@@ -54,4 +72,7 @@ module.exports = {
     getByUserName,
     getByEmail,
     addUser,
+    getCategoriesByUser,
+    removeAllCategoriesByUser,
+    removeAllTasksByUser,
 }

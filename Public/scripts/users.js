@@ -84,18 +84,33 @@ function closeEditModal(){
 }
 
 async function deleteUser(id) {
-    let confirmation = confirm('Are you sure you want to delete this user?');
-    if(!confirmation) return;
     try{
         let response = await fetch(`/users/${id}`,{
             method: 'DELETE'
         });
         let data = await response.json();
-        if(response.status === 200){
-            alert(data.message);
-            getUsers();
+        
+        if(data.hasCategories){
+            let confirmation = confirm(`⚠️ This user has ${data.categoriesCount} categor(ies)\n\nAre you sure you want to delete this user and all its categories?`);
+            if(!confirmation) return;
+            
+            let deleteResponse = await fetch(`/users/${id}/confirm`,{
+                method: 'DELETE'
+            });
+            let deleteData = await deleteResponse.json();
+            if(deleteResponse.status === 200){
+                alert(deleteData.message);
+                getUsers();
+            }else{
+                alert(deleteData.message);
+            }
         }else{
-            alert(data.message);
+            if(response.status === 200){
+                alert(data.message);
+                getUsers();
+            }else{
+                alert(data.message);
+            }
         }
     }catch(err){
         console.error(err);

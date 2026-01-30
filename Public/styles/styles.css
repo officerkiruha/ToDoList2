@@ -199,3 +199,118 @@ table tr:last-child td {
 #editModal button:last-child {
     margin-right: 0;
 }
+
+/* Container styles */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.page-header {
+    margin-top: 30px;
+}
+
+/* Navigation links */
+.nav-links {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+/* Task form container */
+.task-form {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    margin-bottom: 30px;
+}
+
+.task-form h2 {
+    margin-bottom: 20px;
+}
+
+.task-form-inputs {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.task-form-inputs input {
+    flex: 1;
+    min-width: 200px;
+}
+
+.task-form-inputs select {
+    flex: 0 1 auto;
+}
+
+.filter-section {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-section label {
+    font-weight: 500;
+    color: #34495e;
+}
+
+/* Login/Register container */
+.auth-container {
+    max-width: 400px;
+    margin: 50px auto;
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+}
+
+.auth-container h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #34495e;
+}
+
+.form-group input {
+    width: 100%;
+    margin-right: 0;
+}
+
+.auth-container button {
+    width: 100%;
+    margin-top: 20px;
+    margin-right: 0;
+}
+
+.auth-links {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.auth-links p {
+    color: #7f8c8d;
+    margin-bottom: 10px;
+}
+
+.auth-links a {
+    width: 100%;
+    margin: 0;
+}
+
+#message {
+    text-align: center;
+    margin-top: 20px;
+    color: #e74c3c;
+}

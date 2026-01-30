@@ -3,36 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>To-Do List</title>
     <link rel="stylesheet" href="../styles/styles.css">
 </head>
 <body>
+<div class="container">
     <h1 id="greating"></h1>
-    <div>
-        <a href="/users-page">Manage Users</a>
-        <br>
-        <a href="/categories-page">categories</a>
+    
+    <div class="nav-links">
+        <a href="/users-page">👥 Manage Users</a>
+        <a href="/categories-page">📂 Manage Categories</a>
     </div>
-    <div>
-        <input type="text" id="taskInput" placeholder="add task">
-        <select id="categorySelect"></select>
-        <button onclick="addTask()">Add</button>
+    
+    <div class="task-form">
+        <h2>➕ Add Task</h2>
+        <div class="task-form-inputs">
+            <input type="text" id="taskInput" placeholder="Enter task...">
+            <select id="categorySelect"></select>
+            <button onclick="addTask()">Add Task</button>
+        </div>
     </div>
-    <select id="tasksSelect"></select>
+    
+    <div class="filter-section">
+        <label for="tasksSelect">Filter by:</label>
+        <select id="tasksSelect"></select>
+    </div>
+    
     <table border="1">
-      <thead>
-        <tr>
-            <th>isDone</th>
-            <th>Text</th>
-            <th>Category</th>
-            <th>Edit</th>
-            <th>Delete</th>
-        </tr>
-      </thead>
-      <tbody id="taskTabel"></tbody>
+        <thead>
+            <tr>
+                <th>✓ Done</th>
+                <th>Task</th>
+                <th>Category</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody id="taskTabel"></tbody>
     </table>
-    <div id="editModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1;">
-        <div style="background:white; margin:50px auto; padding:20px; width:400px; border-radius:5px;">
+
+    <div id="editModal">
+        <div>
             <h2>Edit Task</h2>
             <input type="text" id="editTaskInput" placeholder="Task text">
             <select id="editCategorySelect"></select>
@@ -40,7 +51,8 @@
             <button onclick="closeEditModal()">Cancel</button>
         </div>
     </div>
+</div>
     
-    <script src="../scripts/script.js";></script>
+    <script src="../scripts/script.js"></script>
 </body>
 </html>

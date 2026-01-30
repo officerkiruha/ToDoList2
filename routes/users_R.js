@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const  {getAllUsers,getOneUser,deleteUser,updateUser} = require('../controller/users_C.js');
+const  {getAllUsers,getOneUser,deleteUser,updateUser,deleteUserWithCategories} = require('../controller/users_C.js');
 const {isValidId,valuesToEdit} = require('../middelware/users_MID.js');
 const {isLoggedIn} = require('../middelware/auth_MID.js');
 
@@ -8,6 +8,7 @@ const {isLoggedIn} = require('../middelware/auth_MID.js');
 router.get('/',isLoggedIn,getAllUsers);
 router.get('/:id',isValidId,getOneUser);
 router.delete('/:id',isValidId,deleteUser);
+router.delete('/:id/confirm',isValidId,deleteUserWithCategories);
 router.patch('/:id',isValidId,valuesToEdit,updateUser);
 
 module.exports = router;
