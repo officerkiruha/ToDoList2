@@ -218,3 +218,22 @@ async function addTask() {
 
 getCategories()
 getTasks();
+
+async function logout(){
+    try{
+        let response = await fetch('/auth/logout',{
+            method: 'POST'
+        });
+        let data = await response.json();
+        if(response.status === 200){
+            localStorage.removeItem('name');
+            alert(data.message);
+            window.location.href = '/login';
+        }else{
+            alert(data.message);
+        }
+    }catch(err){
+        console.error(err);
+        alert('Error logging out');
+    }
+}
